@@ -8,16 +8,15 @@ import {
   Input,
   Radio,
   RadioGroup,
-  Select,
   Stack,
 } from "@chakra-ui/react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { PhoneInput } from "shared/ui/PhoneInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "../model/form-schemas";
 import { Sex, useAuth } from "entities/auth";
 import { useId } from "react";
-
+import { Select } from "chakra-react-select";
 interface ProfileFormFields {
   firstName: string;
   lastName: string;
@@ -32,6 +31,7 @@ export const ProfileForm = () => {
   const formId = useId();
   const { user } = useAuth();
   const {
+    control,
     register: fieldRegister,
     handleSubmit,
     formState: { errors, defaultValues },
@@ -106,11 +106,19 @@ export const ProfileForm = () => {
           </FormControl>
           <FormControl isInvalid={errors.job !== undefined}>
             <FormLabel>Ваша должность</FormLabel>
-            <Select placeholder="Выберите должность" {...fieldRegister("job")}>
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </Select>
+            <Controller
+              control={control}
+              name="job"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Select
+                  onBlur={onBlur}
+                  variant="flushed"
+                  placeholder="Выберите должность"
+                  onChange={onChange}
+                  value={value}
+                />
+              )}
+            />
             <FormErrorMessage>
               {errors.job && errors.job.message}
             </FormErrorMessage>

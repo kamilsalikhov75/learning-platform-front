@@ -13,10 +13,13 @@ export const $store = createStore<typeof initialState>(initialState);
 
 export const { setCourseLessons } = createApi($store, {
   setCourseLessons: (state, payload: Lesson[]) => {
+    const lessons = payload.map((lesson, index) => {
+      return { ...lesson, order: index + 1 };
+    });
     if (state.currentCourse) {
       return {
         ...state,
-        currentCourse: { ...state.currentCourse, lessons: payload },
+        currentCourse: { ...state.currentCourse, lessons },
       };
     }
   },

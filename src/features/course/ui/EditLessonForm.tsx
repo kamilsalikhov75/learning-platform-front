@@ -37,8 +37,6 @@ export const EditLessonForm = () => {
     console.log(`fetch to lesson with ${lessonId} id`);
   }, [lessonId]);
 
-  console.log(errors);
-
   return (
     <>
       <form
