@@ -1,3 +1,5 @@
+import { Job } from "entities/job";
+
 export interface User {
   _id: string;
   firstName: string;
@@ -6,6 +8,7 @@ export interface User {
   phone: string;
   role: Role;
   sex: Sex;
+  job: Job;
 }
 
 export enum Role {

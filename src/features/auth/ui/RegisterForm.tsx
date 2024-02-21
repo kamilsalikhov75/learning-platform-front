@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
   FormControl,
@@ -14,15 +15,16 @@ import { Link } from "react-router-dom";
 import { PhoneInput } from "shared/ui/PhoneInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../model/form-schemas";
-import { Sex } from "entities/auth";
-import { Select } from "chakra-react-select";
+import { Sex, register } from "entities/auth";
+import { JobsSelect } from "features/job";
+import { Job } from "entities/job";
 
 interface RegisterFormFields {
   firstName: string;
   lastName: string;
   surName: string;
   sex: Sex;
-  job: string;
+  job: Job;
   phone: string;
   password: string;
   passwordConfirm: string;
@@ -41,7 +43,11 @@ export const RegisterForm = () => {
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        console.log(data);
+        const { passwordConfirm, ...formData } = {
+          ...data,
+          job: data.job._id,
+        };
+        register(formData);
       })}
       style={{ width: "100%", maxWidth: "500px" }}
     >
@@ -101,7 +107,7 @@ export const RegisterForm = () => {
             control={control}
             name="job"
             render={({ field: { onChange, onBlur, value } }) => (
-              <Select
+              <JobsSelect
                 onBlur={onBlur}
                 variant="flushed"
                 placeholder="Выберите должность"

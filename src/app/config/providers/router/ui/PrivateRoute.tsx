@@ -14,11 +14,11 @@ export const PrivateRoute = ({ children, role }: PrivateRouteProps) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // const token = Cookies.get("access_token");
+    const token = Cookies.get("access_token");
 
-    // if (!token) {
-    //   return navigate("/auth/login");
-    // }
+    if (!token) {
+      return navigate("/auth/login");
+    }
 
     if (role && role !== user?.role) {
       return navigate("/");

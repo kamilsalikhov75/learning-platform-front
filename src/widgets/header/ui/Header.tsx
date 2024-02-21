@@ -4,6 +4,7 @@ import { SidebarDrawer } from "widgets/sidebar";
 
 export const Header = () => {
   const { user } = useAuth();
+
   return (
     <Flex as="header" w="100%" justifyContent="space-between">
       <Show breakpoint="(max-width: 1200px)">

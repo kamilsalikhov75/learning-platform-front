@@ -14,15 +14,16 @@ import { Controller, useForm } from "react-hook-form";
 import { PhoneInput } from "shared/ui/PhoneInput";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { profileSchema } from "../model/form-schemas";
-import { Sex, useAuth } from "entities/auth";
-import { useId } from "react";
-import { Select } from "chakra-react-select";
+import { Sex, updateMe, useAuth } from "entities/auth";
+import { useEffect, useId } from "react";
+import { Job } from "entities/job";
+import { JobsSelect } from "features/job";
 interface ProfileFormFields {
   firstName: string;
   lastName: string;
   surName: string;
   sex: Sex;
-  job: string;
+  job: Job;
   phone: string;
   password: string;
 }
@@ -33,18 +34,25 @@ export const ProfileForm = () => {
   const {
     control,
     register: fieldRegister,
+    reset,
     handleSubmit,
-    formState: { errors, defaultValues },
+    formState: { errors },
   } = useForm<ProfileFormFields>({
     defaultValues: { ...user },
     resolver: zodResolver(profileSchema),
   });
 
+  useEffect(() => {
+    if (user) {
+      reset(user);
+    }
+  }, [user, reset]);
+
   return (
     <form
       id={formId}
       onSubmit={handleSubmit((data) => {
-        console.log(data);
+        updateMe({ ...data, job: data.job._id });
       })}
     >
       <Stack gap="16px">
@@ -90,16 +98,19 @@ export const ProfileForm = () => {
           </FormControl>
           <FormControl isInvalid={errors.sex !== undefined}>
             <FormLabel>Ваш пол</FormLabel>
-            <RadioGroup defaultValue={defaultValues?.sex}>
-              <Stack direction="row">
-                <Radio {...fieldRegister("sex")} value={Sex.Male}>
-                  Мужской
-                </Radio>
-                <Radio {...fieldRegister("sex")} value={Sex.Female}>
-                  Женский
-                </Radio>
-              </Stack>
-            </RadioGroup>
+            <Controller
+              control={control}
+              name="sex"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <RadioGroup value={value} onChange={onChange} onBlur={onBlur}>
+                  <Stack direction="row">
+                    <Radio value={Sex.Male}>Мужской</Radio>
+                    <Radio value={Sex.Female}>Женский</Radio>
+                  </Stack>
+                </RadioGroup>
+              )}
+            />
+
             <FormErrorMessage>
               {errors.sex && errors.sex.message}
             </FormErrorMessage>
@@ -110,7 +121,8 @@ export const ProfileForm = () => {
               control={control}
               name="job"
               render={({ field: { onChange, onBlur, value } }) => (
-                <Select
+                <JobsSelect
+                  defaultValue={value}
                   onBlur={onBlur}
                   variant="flushed"
                   placeholder="Выберите должность"

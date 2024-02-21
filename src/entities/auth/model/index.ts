@@ -3,12 +3,10 @@ import { useUnit } from "effector-react";
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import { backend, getHeaders } from "shared/api/backend";
-import { AuthStore } from "../types";
-import { MockUser } from "./mock";
+import { AuthStore, Sex, User } from "../types";
 
 export const initialState: AuthStore = {
-  isAuth: true,
-  user: MockUser,
+  isAuth: false,
 };
 
 export const login = createEffect(
@@ -32,7 +30,15 @@ export const login = createEffect(
 );
 
 export const register = createEffect(
-  async (data: { name: string; email: string; password: string }) => {
+  async (data: {
+    firstName: string;
+    lastName: string;
+    surName: string;
+    password: string;
+    job: string;
+    phone: string;
+    sex: Sex;
+  }) => {
     const { data: responseData } = await backend.request<{
       access_token: string;
     }>({
@@ -51,6 +57,26 @@ export const register = createEffect(
   }
 );
 
+export const updateMe = createEffect(
+  async (data: {
+    firstName: string;
+    lastName: string;
+    surName: string;
+    job: string;
+    phone: string;
+    sex: Sex;
+  }) => {
+    const { data: responseData } = await backend.request<User>({
+      method: "PUT",
+      url: "/users/me",
+      headers: getHeaders(),
+      data,
+    });
+
+    return responseData;
+  }
+);
+
 export const getMe = createEffect(async () => {
   const { data } = await backend.request({
     method: "GET",
@@ -64,7 +90,8 @@ export const getMe = createEffect(async () => {
 export const $store = createStore<typeof initialState>(initialState)
   .on(login.doneData, (state) => ({ ...state, isAuth: true }))
   .on(register.doneData, (state) => ({ ...state, isAuth: true }))
-  .on(getMe.doneData, (state, user) => ({ ...state, user }));
+  .on(getMe.doneData, (state, user) => ({ ...state, user }))
+  .on(updateMe.doneData, (state, user) => ({ ...state, user }));
 
 export const { logout } = createApi($store, {
   logout: (state) => {

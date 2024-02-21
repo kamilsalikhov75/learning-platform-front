@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { PhoneInput } from "shared/ui/PhoneInput";
 import { loginSchema } from "../model/form-schemas";
+import { login } from "entities/auth";
 
 interface LoginFormFields {
   phone: string;
@@ -29,7 +30,7 @@ export const LoginForm = () => {
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        console.log(data);
+        login({ username: data.phone, password: data.password });
       })}
       style={{ width: "100%", maxWidth: "500px" }}
     >
