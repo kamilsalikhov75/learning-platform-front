@@ -8,12 +8,15 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
-import { createCourseSchema } from "../model/form-schemas";
-import { Select } from "chakra-react-select";
+import { createCourseSchema } from "../../model/form-schemas";
+import { JobsSelect } from "features/job";
+import { Job } from "entities/job";
+import { createCourse } from "entities/course";
+import { useNavigate } from "react-router";
 
 interface CreateCourseFormFields {
   title: string;
-  jobs: string[];
+  jobs: Job[];
 }
 
 export const CreateCourseForm = () => {
@@ -25,11 +28,15 @@ export const CreateCourseForm = () => {
   } = useForm<CreateCourseFormFields>({
     resolver: zodResolver(createCourseSchema),
   });
+  const navigate = useNavigate();
 
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        console.log(data);
+        const jobs = data.jobs.map((job) => job._id);
+        createCourse({ title: data.title, jobs }).then((course) => {
+          navigate(`/admin/courses/${course._id}`);
+        });
       })}
     >
       <Stack gap="16px">
@@ -50,7 +57,7 @@ export const CreateCourseForm = () => {
             control={control}
             name="jobs"
             render={({ field: { onChange, onBlur, value } }) => (
-              <Select
+              <JobsSelect
                 isMulti
                 onBlur={onBlur}
                 variant="flushed"

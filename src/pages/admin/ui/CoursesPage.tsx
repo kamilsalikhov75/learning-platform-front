@@ -1,14 +1,20 @@
 import { Heading } from "@chakra-ui/react";
-import { useCourses } from "entities/course";
-import { CourseCard } from "features/course";
+import { getCourses, useCourses } from "entities/course";
+import { AdminCourseCard } from "features/course";
+import { useEffect } from "react";
 
 export const CoursesPage = () => {
   const { courses } = useCourses();
+
+  useEffect(() => {
+    getCourses();
+  }, []);
+
   return (
     <>
       <Heading>Список курсов</Heading>
       {courses?.map((course) => {
-        return <CourseCard key={course._id} data={course} />;
+        return <AdminCourseCard key={course._id} data={course} />;
       })}
     </>
   );

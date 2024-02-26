@@ -1,22 +1,13 @@
-import {
-  Badge,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  SimpleGrid,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import { Course } from "entities/course";
+import { Box, Button, Heading, SimpleGrid } from "@chakra-ui/react";
+import type { Course } from "entities/course";
 import { Link } from "react-router-dom";
 
-export interface CourseCard {
+export interface CourseCardProps {
   data: Course;
 }
 
-export const CourseCard = ({ data }: CourseCard) => {
-  const { title, jobs, _id, lessons } = data;
+export const CourseCard = ({ data }: CourseCardProps) => {
+  const { _id, title } = data;
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p="20px">
       <SimpleGrid
@@ -28,24 +19,9 @@ export const CourseCard = ({ data }: CourseCard) => {
         <Heading as="h6" size="sm">
           {title}
         </Heading>
-        <Stack>
-          <Text>Должности:</Text>
-          <Flex gap="4px" flexWrap="wrap">
-            {jobs.map((job) => {
-              return <Badge key={job.title}>{job.title}</Badge>;
-            })}
-          </Flex>
-        </Stack>
-        <Text>Уроков: {lessons.length}</Text>
-        <Stack>
-          <Text>Действия:</Text>
-          <Stack direction="row">
-            <Button colorScheme="red">Удалить</Button>
-            <Button as={Link} to={`/admin/courses/${_id}`}>
-              Редактировать
-            </Button>
-          </Stack>
-        </Stack>
+        <Button as={Link} to={`/courses/${_id}`}>
+          Перейти
+        </Button>
       </SimpleGrid>
     </Box>
   );

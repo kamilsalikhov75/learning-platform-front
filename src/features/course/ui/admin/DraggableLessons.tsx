@@ -1,10 +1,14 @@
-import { setCourseLessons, useCourses } from "entities/course";
-import { LessonCard } from "./LessonCard";
+import {
+  setCourseLessons,
+  updateLessonsOrder,
+  useCourses,
+} from "entities/course";
+import { AdminLessonCard } from "./LessonCard";
 import { AnimatePresence, Reorder } from "framer-motion";
 import { Button, Flex, Text } from "@chakra-ui/react";
 
 export const DraggableLessons = () => {
-  const { currentCourse } = useCourses();
+  const { lessons } = useCourses();
 
   return (
     <>
@@ -12,17 +16,25 @@ export const DraggableLessons = () => {
         <Text fontSize="lg">
           Чтобы изменить порядок уроков перетаскивай блоки на нужное место
         </Text>
-        <Button>Сохранить</Button>
+        <Button
+          onClick={() => {
+            if (lessons) {
+              updateLessonsOrder({ lessons });
+            }
+          }}
+        >
+          Сохранить порядок
+        </Button>
       </Flex>
       <Reorder.Group
         as="div"
         axis="y"
-        values={currentCourse?.lessons || []}
+        values={lessons || []}
         onReorder={setCourseLessons}
       >
         <AnimatePresence>
-          {currentCourse?.lessons.map((lesson) => {
-            return <LessonCard key={lesson._id} data={lesson} />;
+          {lessons?.map((lesson) => {
+            return <AdminLessonCard key={lesson._id} data={lesson} />;
           })}
         </AnimatePresence>
       </Reorder.Group>

@@ -9,6 +9,7 @@ export interface User {
   role: Role;
   sex: Sex;
   job: Job;
+  finishedLessons: string[];
 }
 
 export enum Role {

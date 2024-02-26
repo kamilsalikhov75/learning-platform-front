@@ -8,7 +8,8 @@ import {
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { createLessonSchema } from "../model/form-schemas";
+import { createLessonSchema } from "../../model/form-schemas";
+import { createLesson, useCourses } from "entities/course";
 
 interface CreateLessonFormFields {
   title: string;
@@ -22,10 +23,13 @@ export const CreateLessonForm = () => {
   } = useForm<CreateLessonFormFields>({
     resolver: zodResolver(createLessonSchema),
   });
+  const { currentCourse } = useCourses();
   return (
     <form
       onSubmit={handleSubmit((data) => {
-        console.log(data);
+        if (currentCourse?._id) {
+          createLesson({ title: data.title, course: currentCourse?._id });
+        }
       })}
     >
       <Stack gap="16px">

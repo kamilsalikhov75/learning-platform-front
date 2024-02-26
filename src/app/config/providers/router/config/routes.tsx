@@ -12,7 +12,9 @@ import {
   HomePage as AdminHomePage,
   CoursePage as AdminCoursePage,
   LessonPage as AdminLessonPage,
+  JobsPage as AdminJobsPage,
 } from "pages/admin";
+import { CoursePage, LessonPage } from "pages/course";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +34,22 @@ export const router = createBrowserRouter([
         element: (
           <PrivateRoute>
             <ProfilePage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "courses/:courseId",
+        element: (
+          <PrivateRoute>
+            <CoursePage />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "lessons/:lessonId",
+        element: (
+          <PrivateRoute>
+            <LessonPage />
           </PrivateRoute>
         ),
       },
@@ -56,7 +74,6 @@ export const router = createBrowserRouter([
               },
             ],
           },
-
           {
             path: "lessons/:lessonId",
             element: <AdminLessonPage />,
@@ -64,6 +81,10 @@ export const router = createBrowserRouter([
           {
             path: "tests",
             element: <AdminTestsPage />,
+          },
+          {
+            path: "jobs",
+            element: <AdminJobsPage />,
           },
         ],
       },

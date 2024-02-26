@@ -5,7 +5,7 @@ export interface Course {
   title: string;
   lessons: Lesson[];
   jobs: Job[];
-  testId: string;
+  test: string[];
 }
 
 export interface Lesson {
@@ -13,6 +13,7 @@ export interface Lesson {
   title: string;
   html: string;
   order: number;
+  course: string
 }
 
 export interface Test {
@@ -36,4 +37,5 @@ export interface CourseStore {
   currentCourse?: Course;
   currentLesson?: Lesson;
   courses?: Course[];
+  lessons?: Lesson[];
 }

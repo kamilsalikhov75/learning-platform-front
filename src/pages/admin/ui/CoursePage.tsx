@@ -1,5 +1,5 @@
 import { Flex, Heading, Stack } from "@chakra-ui/react";
-import { useCourses } from "entities/course";
+import { getCourse, getCourseLessons, useCourses } from "entities/course";
 import { CreateLessonForm, DraggableLessons } from "features/course";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
@@ -9,7 +9,10 @@ export const CoursePage = () => {
   const { courseId } = useParams();
 
   useEffect(() => {
-    console.log(`fetch to course with ${courseId} id`);
+    if (courseId) {
+      getCourse(courseId);
+      getCourseLessons(courseId);
+    }
   }, [courseId]);
 
   return (

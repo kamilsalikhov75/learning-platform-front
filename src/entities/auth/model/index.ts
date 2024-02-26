@@ -59,12 +59,13 @@ export const register = createEffect(
 
 export const updateMe = createEffect(
   async (data: {
-    firstName: string;
-    lastName: string;
-    surName: string;
-    job: string;
-    phone: string;
-    sex: Sex;
+    firstName?: string;
+    lastName?: string;
+    surName?: string;
+    job?: string;
+    phone?: string;
+    sex?: Sex;
+    finishedLessons?: string[];
   }) => {
     const { data: responseData } = await backend.request<User>({
       method: "PUT",
