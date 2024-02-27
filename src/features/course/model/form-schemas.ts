@@ -15,6 +15,14 @@ export const createLessonSchema = z.object({
   title: z.string().min(1, { message: "Минимум 1 символ" }),
 });
 
+export const createQuestionSchema = z.object({
+  title: z.string().min(1, { message: "Минимум 1 символ" }),
+  options: z
+    .array(z.string().min(1))
+    .min(2, "Введите хотя бы 2 варианта ответа"),
+  answer: z.string().min(1, "Определите ответ"),
+});
+
 export const editLessonSchema = z.object({
   title: z.string().min(1, { message: "Минимум 1 символ" }),
   html: z.string().min(1, { message: "Минимум 1 символ" }),

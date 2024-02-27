@@ -8,8 +8,8 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { Course } from "entities/course";
-import { Link } from "react-router-dom";
+import { Course, createTest } from "entities/course";
+import { Link, useNavigate } from "react-router-dom";
 
 export interface AdminCourseCardProps {
   data: Course;
@@ -17,6 +17,7 @@ export interface AdminCourseCardProps {
 
 export const AdminCourseCard = ({ data }: AdminCourseCardProps) => {
   const { title, jobs, _id, test } = data;
+  const navigate = useNavigate();
 
   return (
     <Box borderWidth="1px" borderRadius="lg" overflow="hidden" p="20px">
@@ -40,8 +41,16 @@ export const AdminCourseCard = ({ data }: AdminCourseCardProps) => {
         <Stack>
           <Text>Действия:</Text>
           <Stack direction="row">
-            <Button>
-              {test?.length > 0 ? "Редактировать тест" : "Создать тест"}
+            <Button
+              onClick={() => {
+                if (!test) {
+                  createTest({ course: _id });
+                } else {
+                  navigate(`/admin/tests/${test}`);
+                }
+              }}
+            >
+              {test ? "Редактировать тест" : "Создать тест"}
             </Button>
             <Button as={Link} to={`/admin/courses/${_id}`}>
               Редактировать

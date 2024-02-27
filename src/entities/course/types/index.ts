@@ -5,7 +5,7 @@ export interface Course {
   title: string;
   lessons: Lesson[];
   jobs: Job[];
-  test: string[];
+  test: string;
 }
 
 export interface Lesson {
@@ -13,7 +13,7 @@ export interface Lesson {
   title: string;
   html: string;
   order: number;
-  course: string
+  course: string;
 }
 
 export interface Test {
@@ -25,12 +25,8 @@ export interface Test {
 export interface Question {
   _id: string;
   title: string;
-  options: QuestionOption[];
-}
-
-export interface QuestionOption {
-  label: string;
-  value: string;
+  options: string[];
+  answer: string;
 }
 
 export interface CourseStore {
@@ -38,4 +34,5 @@ export interface CourseStore {
   currentLesson?: Lesson;
   courses?: Course[];
   lessons?: Lesson[];
+  currentTest?: Test;
 }

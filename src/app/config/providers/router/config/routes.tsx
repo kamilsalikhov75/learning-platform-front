@@ -8,7 +8,7 @@ import { ProfilePage } from "pages/profile";
 import { AdminLayout } from "../ui/AdminLayout";
 import {
   CoursesPage as AdminCoursesPage,
-  TestsPage as AdminTestsPage,
+  AdminTestPage,
   HomePage as AdminHomePage,
   CoursePage as AdminCoursePage,
   LessonPage as AdminLessonPage,
@@ -79,8 +79,8 @@ export const router = createBrowserRouter([
             element: <AdminLessonPage />,
           },
           {
-            path: "tests",
-            element: <AdminTestsPage />,
+            path: "tests/:testId",
+            element: <AdminTestPage />,
           },
           {
             path: "jobs",

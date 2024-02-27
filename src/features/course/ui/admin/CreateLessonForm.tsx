@@ -24,6 +24,7 @@ export const CreateLessonForm = () => {
     resolver: zodResolver(createLessonSchema),
   });
   const { currentCourse } = useCourses();
+
   return (
     <form
       onSubmit={handleSubmit((data) => {

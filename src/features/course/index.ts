@@ -4,5 +4,7 @@ export * from "./ui/admin/LessonCard";
 export * from "./ui/admin/CreateLessonForm";
 export * from "./ui/admin/EditLessonForm";
 export * from "./ui/admin/DraggableLessons";
+export * from "./ui/admin/CreateQuestionForm";
+export * from "./ui/admin/Question";
 export * from "./ui/CourseCard";
 export * from "./ui/LessonCard";

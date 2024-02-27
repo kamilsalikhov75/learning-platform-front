@@ -8,10 +8,6 @@ export const ROUTES = [
     href: "/admin/courses",
   },
   {
-    label: "Тесты",
-    href: "/admin/tests",
-  },
-  {
     label: "Должности",
     href: "/admin/jobs",
   },

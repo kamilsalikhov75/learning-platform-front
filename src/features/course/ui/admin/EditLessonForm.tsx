@@ -8,7 +8,12 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getLesson, updateLesson, useCourses } from "entities/course";
+import {
+  getLesson,
+  resetCurrentLesson,
+  updateLesson,
+  useCourses,
+} from "entities/course";
 import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
@@ -28,23 +33,35 @@ export const EditLessonForm = () => {
     register: fieldRegister,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<EditLessonFormFields>({
-    defaultValues: { title: currentLesson?.title, html: currentLesson?.html },
+    values: {
+      title: currentLesson?.title || "",
+      html: currentLesson?.html || "",
+    },
     resolver: zodResolver(editLessonSchema),
   });
 
   useEffect(() => {
+    return () => {
+      resetCurrentLesson();
+    };
+  }, []);
+
+  useEffect(() => {
     if (lessonId) {
       getLesson(lessonId);
+      reset();
     }
   }, [lessonId]);
 
   useEffect(() => {
     if (currentLesson) {
-      reset(currentLesson);
+      setValue("title", currentLesson.title);
+      setValue("html", currentLesson.html);
     }
-  }, [currentLesson, reset]);
+  }, [currentLesson, setValue]);
 
   return (
     <>
